@@ -1,0 +1,215 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+ "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8"/>
+<title>JavaScript HW3</title>
+<script type="text/javascript">
+
+firstNumber="";
+secondNumber="";
+result=0;
+operation = 0;
+queuedOperation = 0;
+calculationFinished = false;
+firstNumberSet = false;
+<!-- 
+
+//This is the function I am providing for you.  It takes as argument a string or a number and displays it in the box in the window
+
+     function display(num) {
+        var node = document.getElementById("display");  
+		node.value=num;
+     }
+
+// `Add whatever JS you want here	 
+	 
+//-->
+
+
+function numInput(num) {
+    if (firstNumberSet == false && num == "0" && firstNumber=="" && calculationFinished==false){
+      return;
+    }
+	else if ((firstNumberSet == false) && (firstNumber=="")) {
+	firstNumber=num;
+    display(firstNumber);
+    }
+    else if (calculationFinished == true) {
+        display(num);
+		firstNumber = num;
+        calculationFinished = false;
+		firstNumberSet = false;
+    }
+	else if ((firstNumberSet == true) && (secondNumber=="")){
+	secondNumber=num;
+	display(secondNumber);
+	}
+	else if ((firstNumberSet == true)){
+	secondNumber+=num;
+	display(secondNumber);
+	}
+	else if ((firstNumberSet == true) && num == "0" && (secondNumber=="") && calculationFinished==false){
+      return;
+    }
+	else {
+	firstNumber+=num;
+	display(firstNumber);
+	}
+}
+
+function decimalInput(dec) {
+if (firstNumberSet == false){
+	//check for decimal 
+    for (i = 0; i < firstNumber.length; i++)
+        if (firstNumber.charAt(i) == '.') {
+            return;
+        }
+    // If there isn't add a decimal to the end of the displayed number
+        firstNumber += dec;
+		display(firstNumber);
+		}
+if (firstNumberSet == true){
+	//check for decimal 
+    for (i = 0; i < secondNumber.length; i++)
+        if (secondNumber.charAt(i) == '.') {
+            return;
+        }
+    // If there isn't add a decimal to the end of the displayed number
+        secondNumber += dec;
+		display(secondNumber);
+		}
+}
+
+
+function operationInput(command) {
+	secondNum = secondNumber-0;	
+    firstNum = firstNumber-0;
+	
+if (calculationFinished==true){
+firstNum=result-0;
+calculationFinished=false;
+}
+	 
+    if (queuedOperation == 0) {
+        firstNumber=String(firstNum);
+    }
+    else if (queuedOperation == 1) {
+       firstNumber =String(firstNum + secondNumNum);
+	   secondNumber = "";
+    }
+    else if (queuedOperation == 2) {
+       firstNumber=String(firstNum-secondNum);
+	   secondNumber = "";
+    }
+    else if (queuedOperation == 3) {
+        firstNumber=String(firstNum*secondNum);
+		secondNumber = "";
+    }
+	else if (queuedOperation == 4) {
+        firstNumber=String(firstNum/secondNum);
+		secondNumber = "";
+    }
+    if (command == '+') {
+        operation = 1;
+    }
+    else if (command == '-') {
+        operation = 2;
+    }
+    if (command == '*') {
+        operation = 3;
+    }
+	if (command == '/') {
+        operation = 4;
+    }
+    queuedOperation = operation;
+	firstNumberSet=true;
+	display(firstNumber);
+    // Clear the display in order to receive a new number
+
+}
+function calculate() {
+	
+	displayNum = secondNumber-0;	
+    storedNum = firstNumber-0;
+    
+    if (operation == 1) {
+        result = storedNum+displayNum;
+		
+    }
+    else if (operation == 2) {
+        result = storedNum-displayNum;
+    }
+    else if (operation == 3) {
+        result = storedNum*displayNum;
+    }
+	else if (operation == 4) {
+        result = storedNum/displayNum;
+    }
+	else if (operation == 0) {
+        result = storedNum;
+    }
+	display(result);
+    if (operation != 0)
+    calculationFinished = true;
+    // Clear all the global variables
+    // Necessary in case the user wants to make a calculation using the answer
+    operation = 0;
+    queuedOperation = 0;
+    firstNumber = "";
+    secondNumber = "";
+
+	
+}
+
+</script>
+</head>
+
+<body> 
+<h1>Simple calculator</h1>
+
+<!--This is the text box where numbers will be displayed.  Call the display function to show a number here -->
+<form action="" method="get">
+<p>
+	<input type="text" id="display"/>
+</p>
+</form>
+
+<form action="" method="get">
+
+            <div class="calcRow">
+                <input type="button" class="calcButton" value="7" onclick="numInput('7')" />
+                <input type="button" class="calcButton" value="8" onclick="numInput('8')" />
+                <input type="button" class="calcButton" value="9" onclick="numInput('9')" />
+                <input type="button" class="calcButton" value="/" onclick="operationInput('/')" />
+            </div>
+            <div class="calcRow">
+                <input type="button" class="calcButton" value="4" onclick="numInput('4')" />
+                <input type="button" class="calcButton" value="5" onclick="numInput('5')" />
+                <input type="button" class="calcButton" value="6" onclick="numInput('6')" />
+                <input type="button" class="calcButton" value="*" onclick="operationInput('*')" />
+            </div>
+            <div class="calcRow">
+                <input type="button" class="calcButton" value="1" onclick="numInput('1')" />
+                <input type="button" class="calcButton" value="2" onclick="numInput('2')" />
+                <input type="button" class="calcButton" value="3" onclick="numInput('3')" />
+                <input type="button" class="calcButton" value="-" onclick="operationInput('-')" />
+            </div>
+            <div class="calcRow">
+                <input type="button" class="calcButton" value="." onclick="decimalInput('.')" />
+                <input type="button" class="calcButton" value="0" onclick="numInput('0')" />
+                <input type="button" class="calcButton" value="=" onclick="calculate()" />
+                <input type="button" class="calcButton" value="+" onclick="operationInput('+')" />
+            </div>
+</form>
+
+<!-- W3C XHTML Validation logo-->
+<p>
+  <a href="http://validator.w3.org/check?uri=referer"><img
+     src="http://www.w3.org/Icons/valid-xhtml11"
+     alt="Valid XHTML 1.1" height="31" width="88" /></a>
+</p>
+</body>
+</html>
